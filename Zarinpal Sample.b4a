@@ -1,0 +1,81 @@
+﻿Version=7.3
+NumberOfModules=2
+Module1=Starter
+Module2=ZarinpalPurchase
+Build1=Default,b4a.example
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="19"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'End of default text.~\n~AddActivityText(Main,~\n~    <intent-filter>~\n~        <action android:name="android.intent.action.VIEW"/>~\n~~\n~         <category android:name="android.intent.category.DEFAULT"/>~\n~         <category android:name="android.intent.category.BROWSABLE"/>~\n~~\n~         <data android:scheme="yourapp"/>~\n~     </intent-filter>~\n~)
+IconFile=
+NumberOfFiles=1
+File1=mainlayout.bal
+NumberOfLibraries=5
+Library1=core
+Library2=okhttputils2
+Library3=json
+Library4=okhttp
+Library5=reflection
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Zarinpal Sample
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: True
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	Dim ZP As ZarinpalPurchase
+End Sub
+
+Sub Globals
+	
+	Dim MerchantID As String = "71c705f8-bd37-11e6-aa0c-000c295eb8fc"
+	
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Activity.LoadLayout("mainlayout")
+	If not(ZP.IsInitialized) Then ZP.Initialize("ZP",Me)
+	ZP.VerificationPayment(Activity.GetStartingIntent)
+End Sub
+
+Sub Activity_Resume
+	
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+
+Sub ZP_ResultPaymentRequest(Result As ResultPaymentRequest)
+	If Result.Status = 100 Then
+		StartActivity(Result.Intent)
+	Else
+		ToastMessageShow("Your Payment Failure :(",False)
+	End If
+End Sub
+
+Sub ZP_ResultVerificationPayment(Result As ResultVerificationPayment)
+	If Result.IsPaymentSuccess Then
+		ToastMessageShow("Your Payment is Success :) " & Result.RefId,False)
+	Else
+		ToastMessageShow("Your Payment is Failure :(",False)
+	End If
+End Sub
+
+Sub PayBtn_Click
+	Dim Payment As ZPaymentRequest
+	Payment.Initialize
+	Payment.Amount = 100
+	Payment.MerchantID = MerchantID
+	Payment.Description = "In App Purchase Test SDK"
+	Payment.Email = "sseedd524@gmail.com"	'Optional Parameters
+	Payment.Mobile = "09116745428"			'Optional Parameters
+	Payment.CallbackURL = "yourapp://app"	'Your App Scheme
+	ZP.StartPayment(Payment)
+End Sub
