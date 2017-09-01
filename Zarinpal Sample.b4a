@@ -40,12 +40,11 @@ End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
 	Activity.LoadLayout("mainlayout")
-	If not(ZP.IsInitialized) Then ZP.Initialize("ZP",Me)
-	ZP.VerificationPayment(Activity.GetStartingIntent)
 End Sub
 
 Sub Activity_Resume
-	
+	If Not(ZP.IsInitialized) Then ZP.Initialize("ZP",Me)
+	ZP.VerificationPayment(Activity.GetStartingIntent)
 End Sub
 
 Sub Activity_Pause (UserClosed As Boolean)
