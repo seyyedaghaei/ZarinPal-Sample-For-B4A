@@ -27,7 +27,7 @@ ZarinPal Payment Request Sample for Basic4Android
 ```
   Dim ZP As ZarinpalPurchase
 ```
-- Then you have to write these two lines at the Activity_Create
+- Then you have to write these two lines at the Activity_Resume
 ```
   If Not(ZP.IsInitialized) Then ZP.Initialize("ZP",Me)
   ZP.VerificationPayment(Activity.GetStartingIntent)
