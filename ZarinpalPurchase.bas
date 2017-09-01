@@ -68,7 +68,7 @@ Private Sub JobDone(Job As HttpJob)
 					Dim ResultVarification As ResultVerificationPayment
 					ResultVarification.Initialize
 					ResultVarification.IsPaymentSuccess = True
-					ResultVarification.RefId = Result.Get("RefId")
+					ResultVarification.RefId = Result.Get("RefID")
 					ResultVarification.Payment = vPayment
 					CallSubDelayed2(target,event&"_ResultVerificationPayment",ResultVarification)
 		End Select
